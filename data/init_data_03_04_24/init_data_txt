@@ -1,0 +1,140 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.2 (Debian 16.2-1.pgdg120+2)
+-- Dumped by pg_dump version 16.2
+
+-- Started on 2024-04-03 16:37:07 UTC
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3402 (class 0 OID 16514)
+-- Dependencies: 219
+-- Data for Name: Formation; Type: TABLE DATA; Schema: public; Owner: haola
+--
+
+COPY public."Formation" (id, name, image, slot1, slot2, slot3, slot4, slot5, stats, "levelUpBonusStats") FROM stdin;
+052953f6-2499-471d-b7f8-8047a6b62225	F1	\N	x0_y0	x2_y0	x1_y1	x0_y2	x2_y2	{}	{}
+eb507d8a-a2c3-48d9-aab7-8e121562bb3b	F2	\N	x1_y0	x0_y1	x1_y1	x2_y1	x1_y2	{}	{}
+38230cf4-f7c4-41cb-9b6e-8a05be9b7bf7	F3	\N	x2_y0	x0_y1	x1_y1	x2_y1	x2_y2	{}	{}
+6318b4d5-2987-498a-95eb-d2f42f4da0b5	F4	\N	x0_y0	x0_y1	x1_y1	x2_y1	x0_y2	{}	{}
+ba402dea-5006-4bca-803d-60984bb82980	F5	\N	x0_y0	x1_y0	x2_y1	x0_y2	x1_y2	{}	{}
+89c0f77e-6162-47c3-a7cb-7f89a23c7aed	F6	\N	x1_y0	x2_y0	x0_y1	x1_y2	x2_y2	{}	{}
+\.
+
+
+--
+-- TOC entry 3400 (class 0 OID 16500)
+-- Dependencies: 217
+-- Data for Name: Ninja; Type: TABLE DATA; Schema: public; Owner: haola
+--
+
+COPY public."Ninja" (id, name, tier, class, attack, defense, "healthPoint", "critDamage", "critRate", "critResist", accuracy, dodge, pierce, toughness, "damageAmplification", "damageReduction", speed, "specialLevelUpBonusStats") FROM stdin;
+1c494e73-69b8-48c0-89e2-2513e8802912	Hashirama Senju	SSR	FIGHTHER	200	50	2000	150	0	0	70	0	10	0	0	0	100	{"pierce": {"unit": "RATE", "value": 0.1}}
+\.
+
+
+--
+-- TOC entry 3399 (class 0 OID 16493)
+-- Dependencies: 216
+-- Data for Name: Player; Type: TABLE DATA; Schema: public; Owner: haola
+--
+
+COPY public."Player" (id, name) FROM stdin;
+7ba2731b-5b39-4c23-8188-51419feec9e3	Hao Test
+f95ab663-a361-47a5-b4a7-830629d33e8c	Huy Test
+\.
+
+
+--
+-- TOC entry 3403 (class 0 OID 16521)
+-- Dependencies: 220
+-- Data for Name: PlayersOwnFormations; Type: TABLE DATA; Schema: public; Owner: haola
+--
+
+COPY public."PlayersOwnFormations" (id, "playerId", "formationId", level) FROM stdin;
+1f4cf427-beae-4376-98a7-087f4ef6c0b1	7ba2731b-5b39-4c23-8188-51419feec9e3	052953f6-2499-471d-b7f8-8047a6b62225	10
+bb55d770-01e6-4a1d-845e-40d9e45e88ab	7ba2731b-5b39-4c23-8188-51419feec9e3	eb507d8a-a2c3-48d9-aab7-8e121562bb3b	10
+52359d89-ff33-4928-b8b9-3e99340e8b3b	7ba2731b-5b39-4c23-8188-51419feec9e3	38230cf4-f7c4-41cb-9b6e-8a05be9b7bf7	10
+049f8451-c6e7-4610-ae76-6306f07196b4	7ba2731b-5b39-4c23-8188-51419feec9e3	6318b4d5-2987-498a-95eb-d2f42f4da0b5	10
+1f5606b3-13b5-4a91-89e7-2baa3e7bc78f	7ba2731b-5b39-4c23-8188-51419feec9e3	ba402dea-5006-4bca-803d-60984bb82980	10
+c5b4b0e0-49b4-4f6a-8b89-edb575450b57	7ba2731b-5b39-4c23-8188-51419feec9e3	89c0f77e-6162-47c3-a7cb-7f89a23c7aed	10
+b0eec5c8-03a3-4753-8c0b-b5419e61afc6	f95ab663-a361-47a5-b4a7-830629d33e8c	052953f6-2499-471d-b7f8-8047a6b62225	8
+2709857d-5da8-4dea-903c-97e15c283ca1	f95ab663-a361-47a5-b4a7-830629d33e8c	eb507d8a-a2c3-48d9-aab7-8e121562bb3b	8
+71161155-d1d6-4cb6-8db2-5005902d3c34	f95ab663-a361-47a5-b4a7-830629d33e8c	38230cf4-f7c4-41cb-9b6e-8a05be9b7bf7	8
+caa06abb-958c-4d96-9112-ca67341c1c37	f95ab663-a361-47a5-b4a7-830629d33e8c	6318b4d5-2987-498a-95eb-d2f42f4da0b5	8
+c74ebbe7-88e5-49f3-bef5-fbcda9ecb680	f95ab663-a361-47a5-b4a7-830629d33e8c	ba402dea-5006-4bca-803d-60984bb82980	8
+58ac87b0-7d32-4498-80da-c440f7adcad9	f95ab663-a361-47a5-b4a7-830629d33e8c	89c0f77e-6162-47c3-a7cb-7f89a23c7aed	8
+\.
+
+
+--
+-- TOC entry 3401 (class 0 OID 16507)
+-- Dependencies: 218
+-- Data for Name: PlayersOwnNinjas; Type: TABLE DATA; Schema: public; Owner: haola
+--
+
+COPY public."PlayersOwnNinjas" (id, "playerId", "ninjaId", source, "createdAt", level, star, grade) FROM stdin;
+f0f6f57a-23f8-47ef-9725-633ae83024af	7ba2731b-5b39-4c23-8188-51419feec9e3	1c494e73-69b8-48c0-89e2-2513e8802912	hao generate for testing	2024-04-03 13:15:08.672	100	5	BLOOD5
+1a4f92cd-547c-4523-91a1-364e7c6de1d7	f95ab663-a361-47a5-b4a7-830629d33e8c	1c494e73-69b8-48c0-89e2-2513e8802912	hao generate for testing	2024-04-03 13:15:08.679	90	5	BLOOD4
+\.
+
+
+--
+-- TOC entry 3404 (class 0 OID 16528)
+-- Dependencies: 221
+-- Data for Name: UsingFormation; Type: TABLE DATA; Schema: public; Owner: haola
+--
+
+COPY public."UsingFormation" (id, type, "refOwnedFormationId") FROM stdin;
+565c1000-fc69-4cf4-962b-13c134a2e5e8	ATTACK	1f4cf427-beae-4376-98a7-087f4ef6c0b1
+68923da8-538f-41e2-aa72-ae4113f0c33b	DEFENSE	bb55d770-01e6-4a1d-845e-40d9e45e88ab
+9f124ac9-6918-4e0c-af9b-184ed44ec6e8	ATTACK	71161155-d1d6-4cb6-8db2-5005902d3c34
+7a534bde-2bd7-4e64-8df9-9c57d17e3137	DEFENSE	caa06abb-958c-4d96-9112-ca67341c1c37
+\.
+
+
+--
+-- TOC entry 3405 (class 0 OID 16535)
+-- Dependencies: 222
+-- Data for Name: NinjasInUsingFormations; Type: TABLE DATA; Schema: public; Owner: haola
+--
+
+COPY public."NinjasInUsingFormations" (id, "refNinjaId", slot, "refUsingFormationId") FROM stdin;
+22b2cf50-8fc0-4120-be54-5a0ecc0ecf77	f0f6f57a-23f8-47ef-9725-633ae83024af	x2_y2	565c1000-fc69-4cf4-962b-13c134a2e5e8
+9f75fcd6-db2d-4f34-96d1-b6340562d802	f0f6f57a-23f8-47ef-9725-633ae83024af	x1_y2	68923da8-538f-41e2-aa72-ae4113f0c33b
+18c000af-2d53-42be-a5f4-d13f433c7b75	1a4f92cd-547c-4523-91a1-364e7c6de1d7	x2_y2	9f124ac9-6918-4e0c-af9b-184ed44ec6e8
+6a25056f-3941-4899-af43-f597f5d4eee7	1a4f92cd-547c-4523-91a1-364e7c6de1d7	x0_y2	7a534bde-2bd7-4e64-8df9-9c57d17e3137
+\.
+
+
+--
+-- TOC entry 3398 (class 0 OID 16391)
+-- Dependencies: 215
+-- Data for Name: _prisma_migrations; Type: TABLE DATA; Schema: public; Owner: haola
+--
+
+COPY public._prisma_migrations (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count) FROM stdin;
+faaa72f6-e586-481f-a4d6-cb6aaf9216ea	98f87e5bc6f3c5b9a1fcc23a29d4967122a3a874365d354ba9ef962b06e52130	2024-04-03 02:02:44.57606+00	20240403020244_init	\N	\N	2024-04-03 02:02:44.513651+00	1
+5ba5bfbc-e51e-4e18-bb69-0bbb319e3895	f2925ae4be2062bff77161c5eada01bec8406d7810b2a96458328fa80c60c629	2024-04-03 02:21:10.096588+00	20240403022110_update	\N	\N	2024-04-03 02:21:10.083094+00	1
+1561f77f-1bb7-49b0-a50a-3c04c4fd172f	1c8e546d68f331edab10a04efc91f1f9ee2c06194a0ba3515b1cde47f41fae61	2024-04-03 13:10:40.16531+00	20240403131039_update_created_at	\N	\N	2024-04-03 13:10:40.142609+00	1
+\.
+
+
+-- Completed on 2024-04-03 16:37:07 UTC
+
+--
+-- PostgreSQL database dump complete
+--
+

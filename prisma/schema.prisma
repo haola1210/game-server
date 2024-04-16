@@ -1,0 +1,168 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Tier {
+  SSR
+  SR
+  S
+  A
+  B
+}
+
+enum Class {
+  FIGHTHER
+  TANKER
+  SUPPORTER
+  ASSASSIN
+}
+
+enum FormationSlot {
+  x0_y0
+  x0_y1
+  x0_y2
+  x1_y0
+  x1_y1
+  x1_y2
+  x2_y0
+  x2_y1
+  x2_y2
+}
+
+enum Grade {
+  //
+  WHITE0
+  //
+  GREEN0
+  GREEN1
+  //
+  BLUE0
+  BLUE1
+  BLUE2
+  //
+  DEATH0
+  DEATH1
+  DEATH2
+  DEATH3
+  //
+  GOLDEN0
+  GOLDEN1
+  GOLDEN2
+  GOLDEN3
+  GOLDEN4
+  //
+  BLOOD0
+  BLOOD1
+  BLOOD2
+  BLOOD3
+  BLOOD4
+  BLOOD5
+}
+
+enum FormationUsageType {
+  ATTACK
+  DEFENSE
+}
+
+model Player {
+  id String @id @default(uuid())
+  name String
+  //
+  ninjas PlayersOwnNinjas[]
+  formations PlayersOwnFormations[]
+}
+
+model Ninja {
+  id String @id @default(uuid())
+  name String
+  tier Tier
+  class Class
+  attack Float
+  defense Float
+  healthPoint Float
+  critDamage Float
+  critRate Float
+  critResist Float
+  accuracy Float
+  dodge Float
+  pierce Float
+  toughness Float
+  damageAmplification Float
+  damageReduction Float
+  speed Float
+  specialLevelUpBonusStats Json
+  //
+  players PlayersOwnNinjas[]
+}
+
+model PlayersOwnNinjas {
+  id String @id @default(uuid())
+  //
+  player Player @relation(fields: [playerId], references: [id])
+  playerId String
+  ninja Ninja @relation(fields: [ninjaId], references: [id])
+  ninjaId String
+  //
+  source String //event, gift, egg,...
+  createdAt DateTime @default(now())
+  level Int
+  star Int
+  grade Grade
+  inFormations NinjasInUsingFormations[]
+}
+
+model Formation {
+  id String @id @default(uuid())
+  name String
+  image String?
+  slot1 FormationSlot
+  slot2 FormationSlot
+  slot3 FormationSlot
+  slot4 FormationSlot
+  slot5 FormationSlot
+  stats Json
+  levelUpBonusStats Json
+  //
+  players PlayersOwnFormations[]
+}
+
+model PlayersOwnFormations {
+  id String @id @default(uuid())
+  //
+  player Player @relation(fields: [playerId], references: [id])
+  playerId String
+  formation Formation @relation(fields: [formationId], references: [id])
+  formationId String
+  //
+  level Int
+  //
+  usages UsingFormation[]
+}
+
+model UsingFormation {
+  id String @id @default(uuid())
+  //
+  refOwnedFormation PlayersOwnFormations @relation(fields: [refOwnedFormationId], references: [id])
+  refOwnedFormationId String
+  //
+  type FormationUsageType
+  //
+  ninjasInFormations NinjasInUsingFormations[]
+}
+
+model NinjasInUsingFormations {
+  id String @id @default(uuid())
+  //
+  refNinja PlayersOwnNinjas @relation(fields: [refNinjaId], references: [id])
+  refNinjaId String
+  refUsingFormation UsingFormation @relation(fields: [refUsingFormationId], references: [id])
+  refUsingFormationId String
+  //
+  slot FormationSlot
+}
