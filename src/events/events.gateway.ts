@@ -19,13 +19,24 @@ import { Server, Socket } from 'socket.io';
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
+
+  rooms: IRoom[] = [];
+
   constructor(private matchsService: MatchsService) {}
 
   handleConnection(@ConnectedSocket() client: Socket) {
-    console.log('connected');
+    console.log(
+      'connected',
+      client.id,
+      Array.from(this.server.sockets.sockets.keys()),
+    );
   }
   handleDisconnect(@ConnectedSocket() client: Socket) {
-    console.log('disconnected');
+    console.log(
+      'disconnected',
+      client.id,
+      Array.from(this.server.sockets.sockets.keys()),
+    );
   }
 
   @SubscribeMessage('create-match')
@@ -37,4 +48,22 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   ) {
     console.log(data);
   }
+
+  @SubscribeMessage('create-room')
+  handleCreateRoom(@MessageBody() body: IRoom) {
+    console.log('asd', body);
+    this.rooms.push(body);
+    this.server.emit('user-create-room-success', { rooms: this.rooms });
+  }
+}
+
+interface IUser {
+  name: string;
+  id: string;
+}
+
+interface IRoom {
+  name: string;
+  id: string;
+  users: IUser[];
 }
