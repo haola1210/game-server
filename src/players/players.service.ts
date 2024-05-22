@@ -4,6 +4,7 @@ import { BaseNinja, InGameNinja } from 'src/classes';
 import { getPosition } from 'src/constants';
 import { LevelUpBonusStats } from 'src/interfaces';
 import { PrismaService } from 'src/prisma.service';
+import { CreatePlayerDto } from './dtos/create-player.dto';
 
 @Injectable()
 export class PlayersService {
@@ -16,6 +17,17 @@ export class PlayersService {
         formations: true,
       },
     });
+  }
+
+  async createPlayer(createPlayerDto: CreatePlayerDto) {
+    const { name } = createPlayerDto;
+    const newPlayer = await this.prisma.player.create({
+      data: {
+        name,
+      },
+    });
+
+    return newPlayer;
   }
 
   async prepareTeam(id: string, formationType: FormationUsageType) {

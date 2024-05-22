@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PlayersService } from './players.service';
 import { FormationUsageType } from '@prisma/client';
+import { CreatePlayerDto } from './dtos/create-player.dto';
 
 @Controller('players')
 export class PlayersController {
@@ -17,5 +18,10 @@ export class PlayersController {
     @Param('formationType') formationType: FormationUsageType,
   ) {
     return this.playersService.prepareTeam(id, formationType);
+  }
+
+  @Post()
+  async createPlayer(@Body() data: CreatePlayerDto) {
+    return await this.playersService.createPlayer(data);
   }
 }

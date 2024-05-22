@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PlayersModule } from './players/players.module';
 import { MatchsModule } from './matchs/matchs.module';
 import { EventsModule } from './events/events.module';
+import { RoomsModule } from './rooms/rooms.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { EventsModule } from './events/events.module';
     PlayersModule,
     MatchsModule,
     EventsModule,
+    RoomsModule,
   ],
 })
 export class AppModule {}
