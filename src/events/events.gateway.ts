@@ -1,3 +1,4 @@
+import { RoomsServices } from './../rooms/rooms.service';
 import {
   ConnectedSocket,
   MessageBody,
@@ -22,7 +23,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   rooms: IRoom[] = [];
 
-  constructor(private matchsService: MatchsService) {}
+  constructor(
+    private matchsService: MatchsService,
+    private roomsServices: RoomsServices,
+  ) {}
 
   handleConnection(@ConnectedSocket() client: Socket) {
     console.log(
@@ -49,66 +53,46 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log(data);
   }
 
-  /** in room list */
-
-  //user create room
-  @SubscribeMessage('user-get-room')
-  userGetRoom(@ConnectedSocket() client: Socket) {
-    client.emit('user-get-room-success', { rooms: this.rooms });
-  }
-
   //user create room
   @SubscribeMessage('user-create-room')
-  userCreateRoom(
-    @MessageBody() room: IRoom,
+  async userCreateRoom(
+    @MessageBody()
+    { playerId, roomData }: { playerId: string; roomData: { name } },
     @ConnectedSocket() client: Socket,
   ) {
-    this.rooms.push(room);
-    client.join(room.id);
-    this.server.emit('user-create-room-success', {
-      rooms: this.rooms,
-      user: room.users[0],
-      room,
-    });
+    const newRoom = await this.roomsServices.createRoom(playerId, roomData);
+
+    const rooms = await this.roomsServices.getAllRoom();
+
+    if (newRoom) {
+      client.join(newRoom.id + '');
+      this.server.emit('user-create-room-success', {
+        rooms: rooms,
+        playerId: playerId,
+        room: newRoom,
+      });
+    }
   }
 
   // join room
   @SubscribeMessage('user-join-room')
-  userJoinRoom(
-    @MessageBody() { user, room }: { user: IUser; room: IRoom },
+  async userJoinRoom(
+    @MessageBody() { playerId, roomId }: { playerId: string; roomId: number },
     @ConnectedSocket() client: Socket,
   ) {
-    this.rooms = this.rooms.map((roomItem) =>
-      roomItem.id === room.id
-        ? {
-            ...roomItem,
-            users: [...roomItem.users, user],
-          }
-        : roomItem,
-    );
-    client.join(room.id);
-    const newRoom = this.rooms.find((roomItem) => roomItem.id === room.id);
+    const room = await this.roomsServices.joinRoom(playerId, roomId);
 
-    this.server.emit('user-join-room-success', {
-      rooms: this.rooms,
-      user,
-      room: newRoom,
-    });
+    const rooms = await this.roomsServices.getAllRoom();
 
-    this.server.to(room.id).emit('someone-join-room-success', {
-      room: newRoom,
-    });
-  }
-
-  /** in room */
-  @SubscribeMessage('user-get-room-detail')
-  userGetRoomDetail(
-    @MessageBody() body: { room_id: string },
-    @ConnectedSocket() client: Socket,
-  ) {
-    client.emit('user-get-room-detail-success', {
-      room: this.rooms.find((item) => item.id === body.room_id),
-    });
+    if (room) {
+      client.join(roomId + '');
+      this.server.emit('user-join-room-success', {
+        rooms,
+        playerId,
+        room,
+      });
+      this.server.to(roomId + '').emit('someone-join-room-success', { room });
+    }
   }
 }
 

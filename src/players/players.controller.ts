@@ -24,4 +24,10 @@ export class PlayersController {
   async createPlayer(@Body() data: CreatePlayerDto) {
     return await this.playersService.createPlayer(data);
   }
+
+  @Get('/:name')
+  async findPlayerByName(@Param() { name }: { name: string }) {
+    console.log(name);
+    return await this.playersService.findPlayerByName(name);
+  }
 }

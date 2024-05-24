@@ -19,6 +19,14 @@ export class PlayersService {
     });
   }
 
+  async findPlayerByName(name: string) {
+    const result = await this.prisma.player.findFirst({
+      where: { name },
+    });
+    console.log(result);
+    return result;
+  }
+
   async createPlayer(createPlayerDto: CreatePlayerDto) {
     const { name } = createPlayerDto;
     const newPlayer = await this.prisma.player.create({
