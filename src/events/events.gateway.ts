@@ -21,8 +21,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  rooms: IRoom[] = [];
-
   constructor(
     private matchsService: MatchsService,
     private roomsServices: RoomsServices,
@@ -94,15 +92,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server.to(roomId + '').emit('someone-join-room-success', { room });
     }
   }
-}
 
-interface IUser {
-  name: string;
-  id: string;
-}
-
-interface IRoom {
-  name: string;
-  id: string;
-  users: IUser[];
+  // join room
+  @SubscribeMessage('user-start-game')
+  async userStartGame(@MessageBody() { roomId }: { roomId: number }) {
+    this.server.to(roomId + '').emit('user-start-game-success');
+  }
 }
